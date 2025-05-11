@@ -1,9 +1,8 @@
-//config/passportConfig.js
 import passport from 'passport';
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
 import Author from '../models/Author.js';
 import jwt from 'jsonwebtoken';
-import "dotenv/config"; // assicurati che carichi le variabili
+import "dotenv/config";
 
 passport.use(
   new GoogleStrategy(

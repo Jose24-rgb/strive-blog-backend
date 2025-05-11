@@ -1,4 +1,3 @@
-// models/Author.js
 import mongoose from "mongoose";
 
 const AuthorSchema = new mongoose.Schema({

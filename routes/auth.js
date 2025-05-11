@@ -1,15 +1,14 @@
-// routes/auth.js
 import express from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import Author from '../models/Author.js';
 import { authenticateToken } from '../middlewares/auth.js';
 import bcrypt from 'bcryptjs';
-import { sendEmail } from '../utils/mailer.js'; // <-- aggiunto
+import { sendEmail } from '../utils/mailer.js';
 
 const router = express.Router();
 
-// === REGISTRA UN NUOVO AUTORE CON INVIO EMAIL ===
+
 router.post('/', async (req, res) => {
   try {
     const { nome, cognome, email, dataDiNascita, password } = req.body;
@@ -25,7 +24,7 @@ router.post('/', async (req, res) => {
 
     await newAuthor.save();
 
-    // Invia email di benvenuto
+   
     await sendEmail(
       email,
       'Benvenuto su StriveBlog!',
@@ -38,7 +37,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// === LOGIN CON CREDENZIALI EMAIL/PASSWORD ===
+
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -55,24 +54,23 @@ router.post('/login', async (req, res) => {
   res.json({ token });
 });
 
-// === LOGIN CON GOOGLE OAUTH ===
-// Endpoint per il login con Google
+
 router.get('/google', passport.authenticate('google', {
   scope: ['profile', 'email'],
 }));
 
-// Callback di Google per la gestione del risultato
+
 router.get(
   '/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
     const { token } = req.user;
-    // Reindirizza al frontend con il token come parametro URL
+   
     res.redirect(`${process.env.FRONTEND_URL}/home?token=${token}`);
   }
 );
 
-// === OTTIENI DATI DELL'UTENTE AUTENTICATO ===
+
 router.get('/me', authenticateToken, async (req, res) => {
   const author = await Author.findById(req.user.id);
   res.json(author);

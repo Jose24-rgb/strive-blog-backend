@@ -1,4 +1,3 @@
-// models/BlogPost.js
 import mongoose from "mongoose";
 
 const BlogPostSchema = new mongoose.Schema({
@@ -12,7 +11,7 @@ const BlogPostSchema = new mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'Author', required: true },
   content: { type: String, required: true },
 
-  // Commenti embedded
+
   comments: [
     {
       _id: { type: mongoose.Schema.Types.ObjectId, default: () => new mongoose.Types.ObjectId() },

@@ -1,15 +1,14 @@
-// routes/blogPosts.js
 import express from 'express';
 import multer from 'multer';
 import { storage } from '../config/cloudinary.js';
 import BlogPost from '../models/BlogPost.js';
-import Author from '../models/Author.js'; // <-- aggiunto
-import { sendEmail } from '../utils/mailer.js'; // <-- aggiunto
+import Author from '../models/Author.js';
+import { sendEmail } from '../utils/mailer.js';
 
 const upload = multer({ storage });
 const router = express.Router();
 
-// POST /blogPosts → crea un nuovo post e invia email all'autore
+
 router.post('/', upload.single('cover'), async (req, res) => {
   try {
     const newPost = new BlogPost({
@@ -26,7 +25,7 @@ router.post('/', upload.single('cover'), async (req, res) => {
 
     await newPost.save();
 
-    // Prendi autore
+
     const author = await Author.findById(req.body.author);
 
     if (author) {
@@ -43,7 +42,7 @@ router.post('/', upload.single('cover'), async (req, res) => {
   }
 });
 
-// GET /blogPosts → restituisce la lista dei post con filtro titolo + paginazione
+
 router.get('/', async (req, res) => {
   const { page = 1, limit = 10, title } = req.query;
 
@@ -67,7 +66,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ✅ GET /authors/:id/blogPosts → tutti i post di un autore specifico
+
 router.get('/authors/:id/blogPosts', async (req, res) => {
   try {
     const posts = await BlogPost.find({ author: req.params.id }).populate('author');
@@ -77,7 +76,7 @@ router.get('/authors/:id/blogPosts', async (req, res) => {
   }
 });
 
-// GET /blogPosts/:id/comments → tutti i commenti del post
+
 router.get('/:id/comments', async (req, res) => {
   try {
     const post = await BlogPost.findById(req.params.id);
@@ -88,7 +87,7 @@ router.get('/:id/comments', async (req, res) => {
   }
 });
 
-// GET /blogPosts/:id/comments/:commentId → commento specifico
+
 router.get('/:id/comments/:commentId', async (req, res) => {
   try {
     const post = await BlogPost.findById(req.params.id);
@@ -103,7 +102,7 @@ router.get('/:id/comments/:commentId', async (req, res) => {
   }
 });
 
-// POST /blogPosts/:id/comments → aggiunge un commento
+
 router.post('/:id/comments', async (req, res) => {
   try {
     const post = await BlogPost.findById(req.params.id);
@@ -123,7 +122,7 @@ router.post('/:id/comments', async (req, res) => {
   }
 });
 
-// PUT /blogPosts/:id/comments/:commentId → modifica un commento
+
 router.put('/:id/comments/:commentId', async (req, res) => {
   try {
     const post = await BlogPost.findById(req.params.id);
@@ -142,7 +141,7 @@ router.put('/:id/comments/:commentId', async (req, res) => {
   }
 });
 
-// DELETE /blogPosts/:id/comments/:commentId → elimina un commento
+
 router.delete('/:id/comments/:commentId', async (req, res) => {
   try {
     const post = await BlogPost.findById(req.params.id);

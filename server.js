@@ -1,4 +1,3 @@
-// server.js
 import express from 'express';
 import cors from 'cors';
 import "dotenv/config";
@@ -24,16 +23,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ✅ Route di test
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// ✅ Route per testare invio email
+
 app.get('/test-email', async (req, res) => {
   try {
     await sendEmail(
-      'tua.email@esempio.com', // 👈 CAMBIA con la tua email reale
+      'tua.email@esempio.com',
       'Email di prova ✔️',
       `<h2>Ciao!</h2><p>Questa è una email di test da StriveBlog.</p>`
     );
@@ -44,22 +43,22 @@ app.get('/test-email', async (req, res) => {
   }
 });
 
-app.use('/', authRouter); // Login e /me (pubbliche)
+app.use('/', authRouter);
 
-// Middleware di autenticazione
+
 app.use((req, res, next) => {
   if (req.path === '/login' || (req.path === '/authors' && req.method === 'POST')) return next();
   authenticateToken(req, res, next);
 });
 
-// Rotte protette
+
 app.use('/authors', authorsRouter);
 app.use('/blogPosts', blogPostsRouter);
 
-// Connessione DB
+
 connectDB();
 
-// Avvio server
+
 app.listen(process.env.PORT, () => {
   console.log("Server is running on port " + process.env.PORT);
 });

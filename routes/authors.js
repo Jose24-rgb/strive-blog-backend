@@ -1,4 +1,3 @@
-// routes/Author.js
 import express from 'express';
 import multer from 'multer';
 import { storage } from '../config/cloudinary.js';
@@ -8,7 +7,7 @@ import bcrypt from 'bcryptjs';
 const upload = multer({ storage });
 const router = express.Router();
 
-// GET /authors → ritorna la lista degli autori con paginazione
+
 router.get('/', async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
@@ -30,7 +29,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /authors/:id → ritorna un singolo autore
+
 router.get('/:id', async (req, res) => {
   try {
     const author = await Author.findById(req.params.id);
@@ -41,7 +40,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /authors → crea un nuovo autore
+
 router.post('/', async (req, res) => {
   try {
     const { nome, cognome, email, dataDiNascita, password } = req.body;
@@ -63,7 +62,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT /authors/:id → modifica un autore
+
 router.put('/:id', async (req, res) => {
   try {
     const updatedAuthor = await Author.findByIdAndUpdate(req.params.id, req.body, {
@@ -77,7 +76,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE /authors/:id → elimina un autore
+
 router.delete('/:id', async (req, res) => {
   try {
     const deletedAuthor = await Author.findByIdAndDelete(req.params.id);
@@ -88,7 +87,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// PATCH /authors/:id/avatar → upload avatar su Cloudinary
+
 router.patch('/:id/avatar', upload.single('avatar'), async (req, res) => {
   try {
     const updatedAuthor = await Author.findByIdAndUpdate(
